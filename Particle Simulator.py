@@ -8,9 +8,7 @@ import numpy as np
 #Part 1:
 class particle:
     def __init__(self, x, y, charge):
-        self.posx: float = x 
-        self.posy: float = y
-        self.posv = np.array([self.posx, self.posy])
+        self.posv = np.array([x, y])
         self.charge = charge  # positive | - negative
     
     def get_pos(self):
