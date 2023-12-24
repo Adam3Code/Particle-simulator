@@ -10,7 +10,6 @@ class particle:
     def __init__(self, x, y, charge):
         self.posv = np.array([x, y])
         self.charge = charge  # positive | - negative
-        self.dimensions = 2
     def get_pos(self):
         return self.posv
     
@@ -30,6 +29,7 @@ class simulator:
     def __init__(self, list_particle):
         self.particles = list_particle  # List of all the particles
         self.K = 8.9875e9
+        self.dimensions = 2
     
     ## Part Three
     def add_particle(self, particle):  # 1
