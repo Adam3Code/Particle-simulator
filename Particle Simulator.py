@@ -10,7 +10,7 @@ class particle:
     def __init__(self, x, y, charge):
         self.posv = np.array([x, y])
         self.charge = charge  # positive | - negative
-    
+        self.dimensions = 2
     def get_pos(self):
         return self.posv
     
@@ -62,17 +62,17 @@ class simulator:
         if r_mag>0:
             return (self.K * particle.get_charge())/(r_mag **2)*(r/r_mag)
         else:
-            return np.zeros(2, dtype='float64')
+            return np.zeros(self.dimensions, dtype='float64')
 
     #Part four: computation
     def get_electric_field_pos(self,position):
-        total_force = np.zeros(2, dtype='float64')
+        total_force = np.zeros(self.dimensions, dtype='float64')
         for particle in self.particles: # Runs a forloop, that adds particle forces and their impact at that position.
             total_force +=self.calculate_force(particle,position)
         return total_force
     
     def get_colomb_force_particle(self,target_particle):
-        total_force = np.zeros(2, dtype='float64') #Intializing a vector 'total_force'
+        total_force = np.zeros(self.dimensions, dtype='float64') #Intializing a vector 'total_force'
         for particle in self.particles:   #Runs a for loop, that adds all the forces acting on particle using colombs law
             if particle!=target_particle:
                 total_force += self.calculate_force(particle,target_particle.get_pos())
