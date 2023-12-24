@@ -67,13 +67,13 @@ class simulator:
     #Part four: computation
     def get_electric_field_pos(self,position):
         total_force = np.zeros(2, dtype='float64')
-        for particle in self.particles: # Runs a forloop, that a_particledd all the the forces and their impact at that position.
+        for particle in self.particles: # Runs a forloop, that adds particle forces and their impact at that position.
             total_force +=self.calculate_force(particle,position)
         return total_force
     
     def get_colomb_force_particle(self,target_particle):
         total_force = np.zeros(2, dtype='float64') #Intializing a vector 'total_force'
-        for particle in self.particles:   #Runs a for loop, that a_particledds all the forces acting on particle using colombs law
+        for particle in self.particles:   #Runs a for loop, that adds all the forces acting on particle using colombs law
             if particle!=target_particle:
                 total_force += self.calculate_force(particle,target_particle.get_pos())
         return total_force
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     particle2 = particle(2.0, 2.0, -1)
     particle3 = particle(3.0, 3.0, 2)
 
-    # An isntance 'sim' is created
+    # An instance 'sim' is created
     sim = simulator([particle1, particle2])
 
     # Test changing charge and position
