@@ -102,9 +102,13 @@ if __name__ == "__main__":
     print("Electric Field at Position (-1.0, -1.0):", electric_field_pos)
     print("Coulomb Force on Particle 3:", coulomb_force_particle3)
 
+    #######################Zans Test###############################
 
+    particle_a = particle(0.0, 0.0, -1)
+    particle_b = particle(1.0, 1.0, -1)
+    particle_c = particle(2.0, 2.0, 1)
 
+    new_sim = simulator([particle_a, particle_b, particle_c])
 
-
-
-
+    print(f'This should be zero {sim.get_colomb_force_particle(particle_b)}')
+    
