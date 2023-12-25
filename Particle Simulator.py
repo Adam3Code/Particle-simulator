@@ -26,11 +26,29 @@ class particle:
 ## Class simulator 
 #Part 2
 class simulator:
-    def __init__(self, list_particle):
+    def __init__(self, list_particle,x_min,x_max,y_min,y_max):
         self.particles = list_particle  # List of all the particles
         self.K = 8.9875e9
         self.dimensions = 2
-    
+        self.boundary_exists = False
+        self.x_min = x_min
+        self.x_max = x_max
+        self.y_min = y_min
+        self.y_max = y_max
+
+    def add_new_boundary(self,x_min,x_max,y_min,y_max):
+        self.x_min = x_min
+        self.x_max = x_max
+        self.y_min = y_min
+        self.y_max = y_max
+
+    def particle_is_within_boundary(self,particle_index):
+        x, y = self.particles[particle_index].get_pos()
+        if self.x_min<=x<=self.x_max and self.y_min<=y<=self.y_max:
+            return True
+        else:
+            return False
+
     ## Part Three
     def add_particle(self, particle):  # 1
         self.particles.append(particle)
@@ -56,7 +74,7 @@ class simulator:
     def remove_all_particles(self): #8 
         self.particles = []
 
-    def calculate_force(self,particle,target_position):
+    def calculate_eletric_field(self,particle,target_position):
         r = target_position - particle.get_pos()
         r_mag = np.linalg.norm(r)
         if r_mag>0:
@@ -65,18 +83,18 @@ class simulator:
             return np.zeros(self.dimensions, dtype='float64')
 
     #Part four: computation
-    def get_electric_field_pos(self,position):
+    def get_electric_field_pos(self,x,y):
         total_force = np.zeros(self.dimensions, dtype='float64')
         for particle in self.particles: # Runs a forloop, that adds particle forces and their impact at that position.
-            total_force +=self.calculate_force(particle,position)
+            total_force +=self.calculate_eletric_field(particle,np.array([x,y]))
         return total_force
     
     def get_colomb_force_particle(self,target_particle):
-        total_force = np.zeros(self.dimensions, dtype='float64') #Intializing a vector 'total_force'
+        total_eletricfield = np.zeros(self.dimensions, dtype='float64') #Intializing a vector 'total_force'
         for particle in self.particles:   #Runs a for loop, that adds all the forces acting on particle using colombs law
             if particle!=target_particle:
-                total_force += self.calculate_force(particle,target_particle.get_pos())
-        return total_force
+                total_eletricfield += self.calculate_eletric_field(particle,target_particle.get_pos())
+        return target_particle.get_charge()*total_eletricfield
 
 
 if __name__ == "__main__":
@@ -86,7 +104,7 @@ if __name__ == "__main__":
     particle3 = particle(3.0, 3.0, 2)
 
     # An instance 'sim' is created
-    sim = simulator([particle1, particle2])
+    sim = simulator([particle1, particle2],1,8,1,8)
 
     # Test changing charge and position
     sim.set_charge(1, 2)
@@ -96,19 +114,19 @@ if __name__ == "__main__":
     print("New Position of Particle 2:", particle2.get_pos())
 
     # Test electric field and Coulomb force
-    electric_field_pos = sim.get_electric_field_pos(np.array([-1.0, -1.0]))
+    electric_field_pos = sim.get_electric_field_pos(-1.0,1.0)
     coulomb_force_particle3 = sim.get_colomb_force_particle(particle3)
 
     print("Electric Field at Position (-1.0, -1.0):", electric_field_pos)
     print("Coulomb Force on Particle 3:", coulomb_force_particle3)
 
     #######################Zans Test###############################
-
+    
     particle_a = particle(0.0, 0.0, -1)
     particle_b = particle(1.0, 1.0, -1)
     particle_c = particle(2.0, 2.0, 1)
 
-    new_sim = simulator([particle_a, particle_b, particle_c])
+    new_sim = simulator([particle_a, particle_b, particle_c],1,8,1,8)
 
-    print(f'This should be zero {sim.get_colomb_force_particle(particle_b)}')
+    print(f'This should be zero {new_sim.get_colomb_force_particle(particle_b)}')
     
