@@ -36,7 +36,7 @@ class simulator:
         self.y_min = y_min
         self.y_max = y_max
 
-    def add_new_boundary(self,x_min,x_max,y_min,y_max):
+    def change_boundary(self,x_min,x_max,y_min,y_max):
         self.x_min = x_min
         self.x_max = x_max
         self.y_min = y_min
